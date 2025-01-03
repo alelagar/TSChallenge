@@ -9,11 +9,14 @@ import { BookStoreService } from '../book-store.service';
 export class BookStoreComponent implements OnInit {
 
   books: any[] = [];
+  searchText: string = '';  // Variable para el texto de búsqueda
+  filterBy: 'title' | 'author' | 'categories';  // Variable para el filtro
 
   constructor(private bookStoreService: BookStoreService) { }
 
   ngOnInit(): void {
     this.bookStoreService.getBooks().subscribe((data: any[]) => {
+      console.log('Datos recibidos desde el servicio:', data);
       this.books = data; 
     })
   }

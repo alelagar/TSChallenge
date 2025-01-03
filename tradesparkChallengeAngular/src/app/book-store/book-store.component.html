@@ -1,5 +1,20 @@
 <div class="background-image">
-    <h1> Book Store </h1>
+    <h1>Book Store</h1>
+
+    <!-- Filtros de búsqueda -->
+    <div class="filter-container">
+        <!-- Campo de búsqueda -->
+        <input type="text" [(ngModel)]="searchText" placeholder="Search for ..." />
+
+        <!-- Selector de filtro -->
+        <select [(ngModel)]="filterBy">
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+            <option value="categories">Categoríes</option>
+        </select>
+    </div>
+
+    <!-- Lista de libros -->
     <div class="book-list">
         <div>
             <table>
@@ -11,7 +26,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let book of books">
+                    <!-- Aplicamos el Pipe bookFilter a la lista de libros -->
+                    <tr *ngFor="let book of books | bookFilter:searchText:filterBy">
                         <td>{{ book["title"] }}</td>
                         <td>{{ book["author"]["name"] }}</td>
                         <td>{{ categoriesToString(book['categories']) }}</td>
@@ -21,4 +37,3 @@
         </div>
     </div>
 </div>
-

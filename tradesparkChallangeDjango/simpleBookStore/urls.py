@@ -18,9 +18,9 @@ urlpatterns = [
     path('remove-category/<str:book_title>/<str:author_name>/<str:category_name>/', RemoveCategoryFromBookWithAuthorView.as_view(), name='remove-category-with-author'),
     #Caso de titulo repetido, añadimos autor
 
-    path('add-category/<str:book_title>/<str:category_name>/', AddCategoryToBookView.as_view(), name='add-category'),
+    path('add-category/<str:book_title>/<str:author_name>/<str:category_name>/', AddCategoryToBookView.as_view(), name='add-category'),
 ]
 
 
-#Curl de testeo: curl -X POST http://localhost:8000/bookStore/add-category/Introduction%20to%20algorithms/Software/
+#Curl de testeo: curl -X DELETE http://localhost:8000/bookStore/remove-category/Introduction%20to%20algorithms/Software/
 

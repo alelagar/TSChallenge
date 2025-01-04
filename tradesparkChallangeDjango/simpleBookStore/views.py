@@ -40,6 +40,7 @@ class RemoveCategoryFromBookView(APIView):
             return Response({"error": "Category not found."}, status=status.HTTP_404_NOT_FOUND)
         
 
+#Como en los libros de ejemplo hay un caso donde se repite el nombre de un libro plantee esto
 class RemoveCategoryFromBookWithAuthorView(RemoveCategoryFromBookView):
     def delete(self, request, book_title, author_name, category_name):
         try:
@@ -67,22 +68,27 @@ class RemoveCategoryFromBookWithAuthorView(RemoveCategoryFromBookView):
 
 #Add solo para poder hacer pruebas con los deletes
 class AddCategoryToBookView(APIView):
-    def post(self, request, book_title, category_name):
+    def post(self, request, book_title, author_name, category_name):
         try:
-            # Buscar el libro por el título
-            book = Book.objects.get(title=book_title)
+            # Busco el autor por el nombre
+            author = Author.objects.get(name=author_name)
 
-            # Buscar la categoría por el nombre
+            # Busco el libro por el título y el autor
+            book = Book.objects.get(title=book_title, author=author)
+
+            # Busco la categoría por el nombre
             category = Category.objects.get(name=category_name)
 
-            # Verificar si la categoría ya está asociada al libro
+            # Verifico si la categoría ya está asociada al libro
             if category in book.categories.all():
-                return Response({"message": f"Category '{category_name}' is already associated with book '{book_title}'."}, status=status.HTTP_200_OK)
+                return Response({"message": f"Category '{category_name}' is already associated with book '{book_title}' by '{author_name}'."}, status=status.HTTP_200_OK)
             
-            # Asociar la categoría al libro
+            # Asocio la categoría al libro
             book.categories.add(category)
-            return Response({"message": f"Category '{category_name}' added to book '{book_title}'."}, status=status.HTTP_201_CREATED)
+            return Response({"message": f"Category '{category_name}' added to book '{book_title}' by '{author_name}'."}, status=status.HTTP_201_CREATED)
 
+        except Author.DoesNotExist:
+            return Response({"error": "Author not found."}, status=status.HTTP_404_NOT_FOUND)
         except Book.DoesNotExist:
             return Response({"error": "Book not found."}, status=status.HTTP_404_NOT_FOUND)
         except Category.DoesNotExist:

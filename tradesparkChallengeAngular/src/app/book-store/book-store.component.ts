@@ -33,4 +33,18 @@ export class BookStoreComponent implements OnInit {
   }
 
 
+  removeCategory(book: any, categoryName: string): void {
+    console.log(book);
+    this.bookStoreService.removeCategory(book['id'], categoryName).subscribe(
+      response => {
+        console.log('Category removed:', response);
+        // Actualiza la lista local de libros tras la eliminación
+        book.categories = book.categories.filter((cat: any) => cat.name !== categoryName);
+      },
+      error => {
+        console.error('Error removing category:', error);
+      }
+    );
+  }
+
 }

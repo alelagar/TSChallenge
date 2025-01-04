@@ -31,6 +31,13 @@
                         <td>{{ book["title"] }}</td>
                         <td>{{ book["author"]["name"] }}</td>
                         <td>{{ categoriesToString(book['categories']) }}</td>
+                        <td>
+                            <span *ngFor="let category of book['categories']">
+                                <button *ngIf="category?.name" (click)="removeCategory(book, category.name)">
+                                    X
+                                </button>
+                            </span>
+                        </td>
                     </tr>
                 </tbody>
             </table>

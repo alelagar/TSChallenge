@@ -65,6 +65,30 @@ class RemoveCategoryFromBookWithAuthorView(RemoveCategoryFromBookView):
             return Response({"error": "Category not found."}, status=status.HTTP_404_NOT_FOUND)
         
 
+#Remove para identificar univocamente un libro.
+class RemoveCategoryFromBookWithIdView(RemoveCategoryFromBookView):
+    def delete(self, request, book_id, category_name):
+        try:
+            # Busco el libro por su ISBN
+            book = Book.objects.get(id=book_id)
+            if book is None:
+                return Response({"error": "Book not found"}, status=status.HTTP_404_NOT_FOUND)
+            category = Category.objects.get(name=category_name)
+
+            if category is None:
+                return Response({"error": "Category not found"}, status=status.HTTP_404_NOT_FOUND)
+
+            # Eliminar la categoría si está asociada
+            if category in book.categories.all():
+                book.categories.remove(category)
+                return Response({"message": f"Category '{category_name}' removed from book with ISBN '{book_id}'."}, status=status.HTTP_200_OK)
+            else:
+                return Response({"error": f"Category '{category_name}' is not associated with book with ISBN '{book_id}'."}, status=status.HTTP_400_BAD_REQUEST)
+        except Book.DoesNotExist:
+            return Response({"error": "Book not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Category.DoesNotExist:
+            return Response({"error": "Category not found."}, status=status.HTTP_404_NOT_FOUND)
+
 
 #Add solo para poder hacer pruebas con los deletes
 class AddCategoryToBookView(APIView):

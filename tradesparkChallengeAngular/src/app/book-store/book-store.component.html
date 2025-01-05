@@ -4,13 +4,13 @@
     <!-- Filtros de búsqueda -->
     <div class="filter-container">
         <!-- Campo de búsqueda -->
-        <input type="text" [(ngModel)]="searchText" placeholder="Search for ..." />
+        <input type="text" [(ngModel)]="searchText" placeholder="Search for ..." class="search-input"/>
 
         <!-- Selector de filtro -->
         <select [(ngModel)]="filterBy">
             <option value="title">Title</option>
             <option value="author">Author</option>
-            <option value="categories">Categoríes</option>
+            <option value="categories">Categories</option>
         </select>
     </div>
 

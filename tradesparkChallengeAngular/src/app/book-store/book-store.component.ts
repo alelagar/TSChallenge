@@ -10,7 +10,7 @@ export class BookStoreComponent implements OnInit {
 
   books: any[] = [];
   searchText: string = '';  // Variable para el texto de búsqueda
-  filterBy: 'title' | 'author' | 'categories';  // Variable para el filtro
+  filterBy: 'title' | 'author' | 'categories' = 'title';  // Variable para el filtro
 
   constructor(private bookStoreService: BookStoreService) { }
 

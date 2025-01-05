@@ -32,7 +32,7 @@ export class BookStoreComponent implements OnInit {
     return categoriesString;
   }
 
-
+  //Codigo del remove, empleo el que usa id y categoria
   removeCategory(book: any, categoryName: string): void {
     this.bookStoreService.removeCategory(book['id'], categoryName).subscribe(
       response => {

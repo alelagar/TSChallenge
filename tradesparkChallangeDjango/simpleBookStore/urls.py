@@ -19,9 +19,11 @@ urlpatterns = [
     #Caso de titulo repetido, añadimos autor
 
     path('remove-category-id/<int:book_id>/<str:category_name>/', RemoveCategoryFromBookWithIdView.as_view(), name='remove-category-with-id'),
+    # Remove con id y categoria
 
+    # Adds para volver a cargar despues de testear el remove
     path('add-category/<str:book_title>/<str:author_name>/<str:category_name>/', AddCategoryToBookView.as_view(), name='add-category'),
-
+   
     path('add-category-id/<int:book_id>/<str:category_name>/', AddCategoryToBookIdView.as_view(), name='add-category-id'),
 ]
 

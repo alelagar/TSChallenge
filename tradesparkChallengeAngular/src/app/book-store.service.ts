@@ -13,6 +13,7 @@ export class BookStoreService {
     return this.client.get('http://localhost:8000/bookStore/books/')
   }
 
+  //URL de remove con id y categoria
   removeCategory(bookId: string, categoryName: string): Observable<any> {
     const url = `http://localhost:8000/bookStore/remove-category-id/${encodeURIComponent(bookId)}/${encodeURIComponent(categoryName)}/`;
     return this.client.delete(url);

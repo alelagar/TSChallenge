@@ -29,6 +29,7 @@ class RemoveCategoryFromBookView(APIView):
             
             book = books.first()
             category = Category.objects.get(name=category_name)
+            # Elimino la categoría si está asociada
             if category in book.categories.all():
                 book.categories.remove(category)
                 return Response({"message": f"Category '{category_name}'removed from book '{book_title}'."}, status=status.HTTP_200_OK)
@@ -40,7 +41,7 @@ class RemoveCategoryFromBookView(APIView):
             return Response({"error": "Category not found."}, status=status.HTTP_404_NOT_FOUND)
         
 
-#Como en los libros de ejemplo hay un caso donde se repite el nombre de un libro plantee esto
+#remove con title-autor, title se repite
 class RemoveCategoryFromBookWithAuthorView(RemoveCategoryFromBookView):
     def delete(self, request, book_title, author_name, category_name):
         try:
@@ -51,7 +52,7 @@ class RemoveCategoryFromBookWithAuthorView(RemoveCategoryFromBookView):
             book = Book.objects.get(title=book_title, author=author)
             category = Category.objects.get(name=category_name)
 
-            # Eliminar la categoría si está asociada
+            # Elimino la categoría si está asociada
             if category in book.categories.all():
                 book.categories.remove(category)
                 return Response({"message": f"Category '{category_name}' removed from book '{book_title}' by {author_name}."}, status=status.HTTP_200_OK)
@@ -65,7 +66,7 @@ class RemoveCategoryFromBookWithAuthorView(RemoveCategoryFromBookView):
             return Response({"error": "Category not found."}, status=status.HTTP_404_NOT_FOUND)
         
 
-#Remove para identificar univocamente un libro.
+#Remove con id y categoria.
 class RemoveCategoryFromBookWithIdView(RemoveCategoryFromBookView):
     def delete(self, request, book_id, category_name):
         try:
@@ -118,7 +119,7 @@ class AddCategoryToBookView(APIView):
         except Category.DoesNotExist:
             return Response({"error": "Category not found."}, status=status.HTTP_404_NOT_FOUND)
         
-
+#Add pero por id
 class AddCategoryToBookIdView(APIView):
     def post(self, request, book_id, category_name):
         try:

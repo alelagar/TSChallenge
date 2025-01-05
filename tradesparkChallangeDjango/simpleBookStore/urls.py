@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import AuthorViewSet, CategoryViewSet, BookViewSet, RemoveCategoryFromBookView, RemoveCategoryFromBookWithAuthorView, AddCategoryToBookView, RemoveCategoryFromBookWithIdView
+from .views import AuthorViewSet, CategoryViewSet, BookViewSet, RemoveCategoryFromBookView, RemoveCategoryFromBookWithAuthorView, AddCategoryToBookView, AddCategoryToBookIdView, RemoveCategoryFromBookWithIdView
 #Importe la vista nueva
 
 router = DefaultRouter()
@@ -21,8 +21,10 @@ urlpatterns = [
     path('remove-category-id/<int:book_id>/<str:category_name>/', RemoveCategoryFromBookWithIdView.as_view(), name='remove-category-with-id'),
 
     path('add-category/<str:book_title>/<str:author_name>/<str:category_name>/', AddCategoryToBookView.as_view(), name='add-category'),
+
+    path('add-category-id/<int:book_id>/<str:category_name>/', AddCategoryToBookIdView.as_view(), name='add-category-id'),
 ]
 
 
-#Curl de testeo: curl -X DELETE http://localhost:8000/bookStore/remove-category/Introduction%20to%20algorithms/Software/
+
 

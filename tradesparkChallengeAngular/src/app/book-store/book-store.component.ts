@@ -34,7 +34,6 @@ export class BookStoreComponent implements OnInit {
 
 
   removeCategory(book: any, categoryName: string): void {
-    console.log(book);
     this.bookStoreService.removeCategory(book['id'], categoryName).subscribe(
       response => {
         console.log('Category removed:', response);

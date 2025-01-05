@@ -71,19 +71,19 @@ class RemoveCategoryFromBookWithIdView(RemoveCategoryFromBookView):
         try:
             # Busco el libro por su ISBN
             book = Book.objects.get(id=book_id)
-            if book is None:
-                return Response({"error": "Book not found"}, status=status.HTTP_404_NOT_FOUND)
-            category = Category.objects.get(name=category_name)
+            print(f"Categories of book {book_id}: {book.categories.all()}")
+            print(f"Searching for category with name '{category_name}'")
+            category = Category.objects.filter(name=category_name).first()
 
             if category is None:
                 return Response({"error": "Category not found"}, status=status.HTTP_404_NOT_FOUND)
-
+            
             # Eliminar la categoría si está asociada
             if category in book.categories.all():
                 book.categories.remove(category)
-                return Response({"message": f"Category '{category_name}' removed from book with ISBN '{book_id}'."}, status=status.HTTP_200_OK)
+                return Response({"message": f"Category '{category_name}' removed from book with Id '{book_id}'."}, status=status.HTTP_200_OK)
             else:
-                return Response({"error": f"Category '{category_name}' is not associated with book with ISBN '{book_id}'."}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"error": f"Category '{category_name}' is not associated with book with Id '{book_id}'."}, status=status.HTTP_400_BAD_REQUEST)
         except Book.DoesNotExist:
             return Response({"error": "Book not found."}, status=status.HTTP_404_NOT_FOUND)
         except Category.DoesNotExist:
@@ -113,6 +113,29 @@ class AddCategoryToBookView(APIView):
 
         except Author.DoesNotExist:
             return Response({"error": "Author not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Book.DoesNotExist:
+            return Response({"error": "Book not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Category.DoesNotExist:
+            return Response({"error": "Category not found."}, status=status.HTTP_404_NOT_FOUND)
+        
+
+class AddCategoryToBookIdView(APIView):
+    def post(self, request, book_id, category_name):
+        try:
+            # Busco el libro por su ID
+            book = Book.objects.get(id=book_id)
+
+            # Busco la categoría por el nombre
+            category = Category.objects.get(name=category_name)
+
+            # Verifico si la categoría ya está asociada al libro
+            if category in book.categories.all():
+                return Response({"message": f"Category '{category_name}' is already associated with book ID '{book_id}'."}, status=status.HTTP_200_OK)
+            
+            # Asocio la categoría al libro
+            book.categories.add(category)
+            return Response({"message": f"Category '{category_name}' added to book ID '{book_id}'."}, status=status.HTTP_201_CREATED)
+
         except Book.DoesNotExist:
             return Response({"error": "Book not found."}, status=status.HTTP_404_NOT_FOUND)
         except Category.DoesNotExist:
